@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Biblioteca ED</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    /* ── Variáveis ─────────────────────────────────────────────── */
+    :root {
+      --gold:        #f5c518;
+      --gold-dark:   #b8860b;
+      --gold-bg:     rgba(245, 197, 24, 0.08);
+      --gold-border: rgba(245, 197, 24, 0.22);
+      --bg:          #0a0a0a;
+      --surface:     #111111;
+      --surface-2:   #0d0d0d;
+      --border:      #1e1e1e;
+      --border-2:    #2a2a2a;
+      --text:        #e5e5e5;
+      --text-muted:  #666666;
+      --text-dim:    #999999;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #111; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+    /* ── Navbar ────────────────────────────────────────────────── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(10,10,10,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      height: 64px;
+      display: flex; align-items: center;
+    }
+    .site-nav .inner {
+      max-width: 1100px; margin: 0 auto; width: 100%; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-icon { font-size: 22px; color: var(--gold); }
+    .brand-text { font-size: 18px; font-weight: 300; letter-spacing: .04em; color: var(--text); }
+    .brand-text strong { font-weight: 700; color: var(--gold); }
+
+    /* ── Botões ────────────────────────────────────────────────── */
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      border: none; color: #000; font-weight: 600; font-size: 14px;
+      letter-spacing: .02em; padding: 9px 22px; border-radius: 8px;
+      font-family: inherit; cursor: pointer; transition: opacity .15s; white-space: nowrap;
+    }
+    .btn-gold:hover { opacity: .88; color: #000; }
+
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border-2); color: #888;
+      font-size: 13px; font-weight: 500; padding: 7px 18px; border-radius: 8px;
+      font-family: inherit; cursor: pointer; transition: all .15s;
+    }
+    .btn-ghost:hover { border-color: #444; color: var(--text); }
+
+    .btn-danger-ghost {
+      background: transparent; border: 1px solid #3a1a1a; color: #c87070;
+      font-size: 13px; font-weight: 500; padding: 7px 18px; border-radius: 8px;
+      font-family: inherit; cursor: pointer; transition: all .15s;
+    }
+    .btn-danger-ghost:hover { border-color: #7a2a2a; color: #f87171; }
+
+    /* ── Page ──────────────────────────────────────────────────── */
+    .page { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    .page-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 32px;
+    }
+    .page-title { font-size: 28px; font-weight: 600; color: #f0f0f0; letter-spacing: -.02em; margin-bottom: 5px; }
+    .page-sub   { font-size: 14px; color: var(--text-muted); }
+
+    /* ── Search ────────────────────────────────────────────────── */
+    .search-wrap { position: relative; margin-bottom: 24px; }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: #555; font-size: 19px; pointer-events: none; line-height: 1;
+    }
+    .search-input {
+      width: 100%; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px 12px 42px; color: var(--text);
+      font-size: 14px; font-family: inherit; outline: none; transition: border-color .15s;
+    }
+    .search-input::placeholder { color: #444; }
+    .search-input:focus { border-color: var(--gold-border); }
+
+    /* ── Cards ─────────────────────────────────────────────────── */
+    .book-list { display: flex; flex-direction: column; gap: 3px; }
+
+    .book-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden; transition: border-color .15s;
+    }
+    .book-card:hover { border-color: #2a2a2a; }
+
+    .card-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; cursor: pointer; gap: 12px; user-select: none;
+    }
+    .card-left { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
+
+    .book-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: var(--gold);
+    }
+    .book-title { font-size: 15px; font-weight: 600; color: #f0f0f0; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .book-meta  { font-size: 13px; color: var(--text-muted); }
+
+    .card-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .badge-gold {
+      background: var(--gold-bg); border: 1px solid var(--gold-border);
+      color: var(--gold); padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+    }
+    .badge-dim {
+      background: rgba(255,255,255,.04); border: 1px solid var(--border-2);
+      color: #888; padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+    }
+
+    .chevron { font-size: 10px; color: #444; transition: transform .2s; }
+    .chevron.open { transform: rotate(180deg); }
+
+    .card-body { border-top: 1px solid #1a1a1a; padding: 20px; display: none; }
+    .card-body.open { display: block; }
+
+    .detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 16px; }
+    .detail-label { font-size: 11px; font-weight: 600; color: #555; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 3px; }
+    .detail-value { font-size: 14px; color: #ccc; }
+
+    .resumo-box {
+      background: var(--surface-2); border: 1px solid #1a1a1a;
+      border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;
+    }
+    .resumo-box p { font-size: 14px; color: #aaa; line-height: 1.75; margin: 0; }
+
+    .card-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+    /* ── Empty state ───────────────────────────────────────────── */
+    .empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; padding: 88px 24px;
+    }
+    .empty-icon  { font-size: 50px; color: #242424; margin-bottom: 22px; }
+    .empty-title { font-size: 20px; font-weight: 600; color: #3a3a3a; margin-bottom: 8px; }
+    .empty-text  { font-size: 14px; color: #555; margin-bottom: 30px; }
+
+    .no-results { display: none; text-align: center; padding: 60px 0; font-size: 15px; color: #555; }
+
+    /* ── Modal ─────────────────────────────────────────────────── */
+    .modal-content { background: #111; border: 1px solid #222; border-radius: 14px; color: var(--text); }
+    .modal-header  { border-bottom: 1px solid var(--border); padding: 20px 24px; }
+    .modal-title   { font-size: 18px; font-weight: 600; color: #f0f0f0; letter-spacing: -.01em; }
+    .modal-footer  { border-top: 1px solid var(--border); padding: 16px 24px; gap: 10px; }
+    .btn-close     { filter: invert(1) brightness(.55); }
+    .modal-body    { padding: 24px; max-height: 62vh; overflow-y: auto; }
+
+    /* ── Form sections ─────────────────────────────────────────── */
+    .form-section { margin-bottom: 20px; }
+    .section-header {
+      font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: .08em;
+      text-transform: uppercase; padding: 11px 16px; background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 8px 8px 0 0;
+    }
+    .section-body { border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px; padding: 18px 16px; }
+
+    .form-label { font-size: 13px; font-weight: 500; color: var(--text-dim); margin-bottom: 6px; }
+    .required-star { color: var(--gold); }
+
+    .form-control, .form-select {
+      background: var(--surface-2); border: 1px solid #222; color: var(--text);
+      border-radius: 8px; font-family: inherit; font-size: 14px; padding: 10px 14px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .form-control:focus, .form-select:focus {
+      background: var(--surface-2); border-color: var(--gold-border);
+      color: var(--text); box-shadow: 0 0 0 3px rgba(245,197,24,.08);
+    }
+    .form-control::placeholder { color: #3a3a3a; }
+    .form-select option { background: #1a1a1a; color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────────────────── -->
+<nav class="site-nav">
+  <div class="inner">
+    <a class="brand" href="#">
+      <span class="brand-icon">◈</span>
+      <span class="brand-text">Biblioteca <strong>ED</strong></span>
+    </a>
+    <button class="btn-gold" data-bs-toggle="modal" data-bs-target="#modalLivro">
+      + Cadastrar Livro
+    </button>
+  </div>
+</nav>
+
+<!-- ── Página principal ───────────────────────────────────────────── -->
+<div class="page">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Acervo</h1>
+      <p class="page-sub">
+        {% if livros %}
+          {{ livros|length }} {% if livros|length == 1 %}obra cadastrada{% else %}obras cadastradas{% endif %}
+        {% else %}
+          Nenhum livro cadastrado ainda
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  {% if livros %}
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" id="searchInput" type="text"
+           placeholder="Buscar por título, autor, categoria, ISBN ou palavras-chave…" />
+  </div>
+
+  <div class="book-list" id="bookList">
+    {% for livro in livros %}
+    <div class="book-card"
+         data-titulo="{{ livro.titulo|lower }}"
+         data-autor="{{ livro.autor|lower }}"
+         data-categoria="{{ livro.categoria|lower }}"
+         data-isbn="{{ livro.isbn|lower }}"
+         data-palavras="{{ livro.palavrasChave|lower }}">
+
+      <div class="card-toggle" onclick="toggleCard(this)">
+        <div class="card-left">
+          <div class="book-icon">
+            {% if "Digital" in livro.formato %}⬡{% else %}▣{% endif %}
+          </div>
+          <div style="min-width:0">
+            <div class="book-title">{{ livro.titulo }}</div>
+            <div class="book-meta">
+              {{ livro.autor }}{% if livro.autor and livro.editora %} &middot; {% endif %}{{ livro.editora }}{% if livro.anoPublicacao %} &middot; {{ livro.anoPublicacao }}{% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="card-right">
+          {% if livro.categoria %}<span class="badge-gold">{{ livro.categoria }}</span>{% endif %}
+          {% if livro.idioma %}<span class="badge-dim d-none d-md-inline">{{ livro.idioma }}</span>{% endif %}
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="detail-grid">
+          {% if livro.isbn %}<div><div class="detail-label">ISBN</div><div class="detail-value">{{ livro.isbn }}</div></div>{% endif %}
+          {% if livro.numeroPaginas %}<div><div class="detail-label">Páginas</div><div class="detail-value">{{ livro.numeroPaginas }}</div></div>{% endif %}
+          {% if livro.formato %}<div><div class="detail-label">Formato</div><div class="detail-value">{{ livro.formato }}</div></div>{% endif %}
+          {% if livro.localizacao %}<div><div class="detail-label">Localização</div><div class="detail-value">{{ livro.localizacao }}</div></div>{% endif %}
+          {% if livro.palavrasChave %}<div class="col-span-2"><div class="detail-label">Palavras-chave</div><div class="detail-value">{{ livro.palavrasChave }}</div></div>{% endif %}
+        </div>
+
+        {% if livro.resumo %}
+        <div class="resumo-box">
+          <div class="detail-label" style="margin-bottom:8px">Resumo</div>
+          <p>{{ livro.resumo }}</p>
+        </div>
+        {% endif %}
+
+        <div class="card-actions">
+          <button class="btn-ghost" onclick="abrirEdicao(
+            {{ livro.id }},
+            '{{ livro.titulo|escapejs }}',
+            '{{ livro.autor|escapejs }}',
+            '{{ livro.editora|escapejs }}',
+            '{{ livro.anoPublicacao|escapejs }}',
+            '{{ livro.isbn|escapejs }}',
+            '{{ livro.categoria|escapejs }}',
+            '{{ livro.numeroPaginas|escapejs }}',
+            '{{ livro.idioma|escapejs }}',
+            '{{ livro.resumo|escapejs }}',
+            '{{ livro.palavrasChave|escapejs }}',
+            '{{ livro.formato|escapejs }}',
+            '{{ livro.localizacao|escapejs }}'
+          )">Editar</button>
+
+          <form method="POST" action="/remover/{{ livro.id }}/" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger-ghost">Remover</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="no-results" id="noResults">Nenhum resultado para sua busca.</div>
+
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">◈</div>
+    <h2 class="empty-title">Acervo vazio</h2>
+    <p class="empty-text">Cadastre o primeiro livro da biblioteca para começar.</p>
+    <button class="btn-gold" data-bs-toggle="modal" data-bs-target="#modalLivro">
+      Cadastrar primeiro livro
+    </button>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- ── Modal Cadastro / Edição ────────────────────────────────────── -->
+<div class="modal fade" id="modalLivro" tabindex="-1" aria-labelledby="modalTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitulo">Cadastrar Livro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form id="formLivro" method="POST" action="/cadastrar/">
+        {% csrf_token %}
+
+        <div class="modal-body">
+
+          <!-- Informações Principais -->
+          <div class="form-section">
+            <div class="section-header">Informações Principais</div>
+            <div class="section-body">
+              <div class="mb-3">
+                <label class="form-label">Título <span class="required-star">*</span></label>
+                <input type="text" class="form-control" name="titulo" id="f_titulo"
+                       placeholder="Ex.: Dom Casmurro" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Autor</label>
+                <input type="text" class="form-control" name="autor" id="f_autor"
+                       placeholder="Ex.: Machado de Assis" />
+              </div>
+              <div class="row g-3 mb-3">
+                <div class="col-md-7">
+                  <label class="form-label">Editora</label>
+                  <input type="text" class="form-control" name="editora" id="f_editora"
+                         placeholder="Ex.: Companhia das Letras" />
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label">Ano de Publicação</label>
+                  <input type="number" class="form-control" name="anoPublicacao" id="f_anoPublicacao"
+                         placeholder="Ex.: 1899" min="0" max="2100" />
+                </div>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">ISBN</label>
+                  <input type="text" class="form-control" name="isbn" id="f_isbn"
+                         placeholder="Ex.: 978-85-359-0277-2" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Categoria / Gênero</label>
+                  <select class="form-select" name="categoria" id="f_categoria">
+                    <option value="">Selecione...</option>
+                    <option>Romance</option>
+                    <option>Literatura Clássica</option>
+                    <option>Ficção Científica</option>
+                    <option>Fantasia</option>
+                    <option>Terror</option>
+                    <option>Suspense / Thriller</option>
+                    <option>Biografia</option>
+                    <option>História</option>
+                    <option>Filosofia</option>
+                    <option>Ciências</option>
+                    <option>Tecnologia</option>
+                    <option>Técnico / Acadêmico</option>
+                    <option>Autoajuda</option>
+                    <option>Infantil</option>
+                    <option>Juvenil</option>
+                    <option>Poesia</option>
+                    <option>Quadrinhos / HQ</option>
+                    <option>Outros</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detalhes Físicos -->
+          <div class="form-section">
+            <div class="section-header">Detalhes Físicos</div>
+            <div class="section-body">
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Número de Páginas</label>
+                  <input type="number" class="form-control" name="numeroPaginas" id="f_numeroPaginas"
+                         placeholder="Ex.: 320" min="1" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Idioma</label>
+                  <select class="form-select" name="idioma" id="f_idioma">
+                    <option value="">Selecione...</option>
+                    <option>Português</option>
+                    <option>Inglês</option>
+                    <option>Espanhol</option>
+                    <option>Francês</option>
+                    <option>Alemão</option>
+                    <option>Italiano</option>
+                    <option>Japonês</option>
+                    <option>Mandarim</option>
+                    <option>Árabe</option>
+                    <option>Outro</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Formato</label>
+                  <select class="form-select" name="formato" id="f_formato">
+                    <option value="">Selecione...</option>
+                    <option>Físico</option>
+                    <option>Digital — PDF</option>
+                    <option>Digital — ePub</option>
+                    <option>Digital — Mobi</option>
+                    <option>Audiobook</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Localização (prateleira / seção)</label>
+                  <input type="text" class="form-control" name="localizacao" id="f_localizacao"
+                         placeholder="Ex.: Seção A – Prateleira 3" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Descrição e Busca -->
+          <div class="form-section mb-0">
+            <div class="section-header">Descrição e Busca</div>
+            <div class="section-body">
+              <div class="mb-3">
+                <label class="form-label">Resumo / Sinopse</label>
+                <textarea class="form-control" name="resumo" id="f_resumo" rows="4"
+                          placeholder="Breve descrição do conteúdo da obra…"></textarea>
+              </div>
+              <div>
+                <label class="form-label">Palavras-chave</label>
+                <input type="text" class="form-control" name="palavrasChave" id="f_palavrasChave"
+                       placeholder="Ex.: romance, século XIX, traição (separe por vírgulas)" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer d-flex justify-content-end">
+          <button type="button" class="btn-ghost px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn-gold px-4" id="btnSubmit">Cadastrar Livro</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function toggleCard(header) {
+    const body    = header.nextElementSibling
+    const chevron = header.querySelector('.chevron')
+    const isOpen  = body.classList.contains('open')
+    document.querySelectorAll('.card-body.open').forEach(b => b.classList.remove('open'))
+    document.querySelectorAll('.chevron.open').forEach(c => c.classList.remove('open'))
+    if (!isOpen) { body.classList.add('open'); chevron.classList.add('open') }
+  }
+
+  document.getElementById('modalLivro').addEventListener('hidden.bs.modal', () => {
+    document.getElementById('formLivro').reset()
+    document.getElementById('formLivro').action = '/cadastrar/'
+    document.getElementById('modalTitulo').textContent = 'Cadastrar Livro'
+    document.getElementById('btnSubmit').textContent   = 'Cadastrar Livro'
+  })
+
+  function abrirEdicao(id, titulo, autor, editora, ano, isbn, categoria, paginas, idioma, resumo, palavras, formato, localizacao) {
+    document.getElementById('formLivro').action        = '/editar/' + id + '/'
+    document.getElementById('modalTitulo').textContent = 'Editar Livro'
+    document.getElementById('btnSubmit').textContent   = 'Salvar Alterações'
+    document.getElementById('f_titulo').value          = titulo
+    document.getElementById('f_autor').value           = autor
+    document.getElementById('f_editora').value         = editora
+    document.getElementById('f_anoPublicacao').value   = ano
+    document.getElementById('f_isbn').value            = isbn
+    document.getElementById('f_numeroPaginas').value   = paginas
+    document.getElementById('f_resumo').value          = resumo
+    document.getElementById('f_palavrasChave').value   = palavras
+    document.getElementById('f_localizacao').value     = localizacao
+    selectOption('f_categoria', categoria)
+    selectOption('f_idioma',    idioma)
+    selectOption('f_formato',   formato)
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('modalLivro')).show()
+  }
+
+  function selectOption(id, value) {
+    const sel = document.getElementById(id)
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].value === value || sel.options[i].text === value) { sel.selectedIndex = i; break }
+    }
+  }
+
+  const searchInput = document.getElementById('searchInput')
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const q = searchInput.value.toLowerCase().trim()
+      let visible = 0
+      document.querySelectorAll('.book-card').forEach(card => {
+        const match = !q
+          || card.dataset.titulo.includes(q)
+          || card.dataset.autor.includes(q)
+          || card.dataset.categoria.includes(q)
+          || card.dataset.isbn.includes(q)
+          || card.dataset.palavras.includes(q)
+        card.style.display = match ? '' : 'none'
+        if (match) visible++
+      })
+      document.getElementById('noResults').style.display = (!visible && q) ? 'block' : 'none'
+    })
+  }
+</script>
+</body>
+</html>
