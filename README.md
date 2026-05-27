@@ -8,8 +8,8 @@
 ---
 
 ## 🛠️ Tecnologias Utilizadas
-- **Backend:** Python  
-- **Frontend:** [React](https://react.dev/)  
+- **Backend:** Python, Django
+- **Frontend:** HTML, CSS, JS, Boostrap5
 
 ---
 
@@ -29,4 +29,10 @@ O sistema permitirá:
 1. Certifique-se de ter o **Python 3.8+** instalado.  
 2. Instale as dependências:  
    ```bash
+   git clone https://github.com/os-cabas/biblioteca-ED.git
+   python -m venv venv
+   cd django_app
    pip install -r requirements.txt
+   python manage.py runserve
+
+   Acesse http://127.0.0.1:8000/
