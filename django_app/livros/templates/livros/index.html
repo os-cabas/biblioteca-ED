@@ -59,6 +59,22 @@
     .brand-text { font-size: 18px; font-weight: 300; letter-spacing: .04em; color: var(--text); }
     .brand-text strong { font-weight: 700; color: var(--gold); }
 
+    /* ── Tab bar ───────────────────────────────────────────────── */
+    .tab-bar {
+      position: sticky; top: 64px; z-index: 150;
+      background: rgba(10,10,10,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+    }
+    .tab-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; }
+    .tab-btn {
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      color: #555; font-family: inherit; font-size: 13px; font-weight: 500;
+      padding: 13px 18px; cursor: pointer; transition: color .15s, border-color .15s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
     /* ── Botões ────────────────────────────────────────────────── */
     .btn-gold {
       background: linear-gradient(135deg, var(--gold-dark), var(--gold));
@@ -81,6 +97,14 @@
       font-family: inherit; cursor: pointer; transition: all .15s;
     }
     .btn-danger-ghost:hover { border-color: #7a2a2a; color: #f87171; }
+
+    .btn-sm-gold {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      border: none; color: #000; font-weight: 600; font-size: 12px;
+      padding: 6px 14px; border-radius: 6px;
+      font-family: inherit; cursor: pointer; transition: opacity .15s; white-space: nowrap;
+    }
+    .btn-sm-gold:hover { opacity: .88; }
 
     /* ── Page ──────────────────────────────────────────────────── */
     .page { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
@@ -127,6 +151,12 @@
       border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-size: 16px; color: var(--gold);
     }
+    .member-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(139,92,246,.1); border: 1px solid rgba(139,92,246,.25);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: #a78bfa;
+    }
     .book-title { font-size: 15px; font-weight: 600; color: #f0f0f0; margin-bottom: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .book-meta  { font-size: 13px; color: var(--text-muted); }
 
@@ -140,6 +170,16 @@
     .badge-dim {
       background: rgba(255,255,255,.04); border: 1px solid var(--border-2);
       color: #888; padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+    }
+    .badge-ok {
+      background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2);
+      color: #4ade80; padding: 3px 10px; border-radius: 20px;
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+    }
+    .badge-err {
+      background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.2);
+      color: #f87171; padding: 3px 10px; border-radius: 20px;
       font-size: 12px; font-weight: 500; white-space: nowrap;
     }
 
@@ -159,7 +199,21 @@
     }
     .resumo-box p { font-size: 14px; color: #aaa; line-height: 1.75; margin: 0; }
 
-    .card-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .card-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+    /* ── Loan card ─────────────────────────────────────────────── */
+    .loan-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; gap: 12px; flex-wrap: wrap;
+    }
+    .loan-left  { display: flex; align-items: center; gap: 14px; flex: 1; min-width: 0; }
+    .loan-icon  {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(245,197,24,.06); border: 1px solid rgba(245,197,24,.18);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 17px; color: var(--gold);
+    }
+    .loan-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
     /* ── Empty state ───────────────────────────────────────────── */
     .empty-state {
@@ -171,6 +225,14 @@
     .empty-text  { font-size: 14px; color: #555; margin-bottom: 30px; }
 
     .no-results { display: none; text-align: center; padding: 60px 0; font-size: 15px; color: #555; }
+
+    /* ── Fila info ─────────────────────────────────────────────── */
+    .fila-box {
+      background: rgba(245,197,24,.04); border: 1px solid rgba(245,197,24,.14);
+      border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;
+    }
+    .fila-item { font-size: 13px; color: #aaa; padding: 3px 0; }
+    .fila-pos  { color: var(--gold); font-weight: 600; margin-right: 6px; }
 
     /* ── Modal ─────────────────────────────────────────────────── */
     .modal-content { background: #111; border: 1px solid #222; border-radius: 14px; color: var(--text); }
@@ -203,6 +265,24 @@
     }
     .form-control::placeholder { color: #3a3a3a; }
     .form-select option { background: #1a1a1a; color: var(--text); }
+    .form-control[readonly] { color: var(--text-dim); cursor: default; }
+
+    /* ── Histórico table ───────────────────────────────────────── */
+    .hist-table { width: 100%; border-collapse: collapse; }
+    .hist-table th {
+      padding: 10px 12px; text-align: left;
+      font-size: 11px; font-weight: 600; color: #555;
+      letter-spacing: .07em; text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+    }
+    .hist-table td { padding: 12px; font-size: 13px; color: #ccc; border-bottom: 1px solid #151515; }
+    .hist-table tr:last-child td { border-bottom: none; }
+
+    /* ── Aviso fila ────────────────────────────────────────────── */
+    .aviso-fila {
+      background: rgba(245,197,24,.05); border: 1px solid var(--gold-border);
+      border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #aaa; line-height: 1.6;
+    }
   </style>
 </head>
 <body>
@@ -214,14 +294,22 @@
       <span class="brand-icon">◈</span>
       <span class="brand-text">Biblioteca <strong>ED</strong></span>
     </a>
-    <button class="btn-gold" data-bs-toggle="modal" data-bs-target="#modalLivro">
-      + Cadastrar Livro
-    </button>
   </div>
 </nav>
 
-<!-- ── Página principal ───────────────────────────────────────────── -->
-<div class="page">
+<!-- ── Tab bar ────────────────────────────────────────────────────── -->
+<div class="tab-bar">
+  <div class="tab-inner">
+    <button class="tab-btn active" data-tab="acervo"      onclick="showTab('acervo')">◈ Acervo</button>
+    <button class="tab-btn"        data-tab="membros"     onclick="showTab('membros')">◎ Membros</button>
+    <button class="tab-btn"        data-tab="emprestimos" onclick="showTab('emprestimos')">↔ Empréstimos</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SEÇÃO: ACERVO
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="tab-acervo">
 
   <div class="page-header">
     <div>
@@ -234,6 +322,9 @@
         {% endif %}
       </p>
     </div>
+    <button class="btn-gold" data-bs-toggle="modal" data-bs-target="#modalLivro">
+      + Cadastrar Livro
+    </button>
   </div>
 
   {% if livros %}
@@ -265,6 +356,11 @@
           </div>
         </div>
         <div class="card-right">
+          {% if livro.disponivel %}
+            <span class="badge-ok d-none d-md-inline">Disponível</span>
+          {% else %}
+            <span class="badge-err d-none d-md-inline">Emprestado{% if livro.fila_espera %} · Fila: {{ livro.fila_espera|length }}{% endif %}</span>
+          {% endif %}
           {% if livro.categoria %}<span class="badge-gold">{{ livro.categoria }}</span>{% endif %}
           {% if livro.idioma %}<span class="badge-dim d-none d-md-inline">{{ livro.idioma }}</span>{% endif %}
           <span class="chevron">▼</span>
@@ -284,6 +380,15 @@
         <div class="resumo-box">
           <div class="detail-label" style="margin-bottom:8px">Resumo</div>
           <p>{{ livro.resumo }}</p>
+        </div>
+        {% endif %}
+
+        {% if not livro.disponivel and livro.fila_espera %}
+        <div class="fila-box">
+          <div class="detail-label" style="margin-bottom:10px">Fila de Espera ({{ livro.fila_espera|length }})</div>
+          {% for nome in livro.fila_espera %}
+          <div class="fila-item"><span class="fila-pos">{{ forloop.counter }}.</span>{{ nome }}</div>
+          {% endfor %}
         </div>
         {% endif %}
 
@@ -308,6 +413,13 @@
             {% csrf_token %}
             <button type="submit" class="btn-danger-ghost">Remover</button>
           </form>
+
+          {% if membros %}
+          <button class="btn-sm-gold"
+            onclick="abrirEmprestimo({{ livro.id }}, '{{ livro.titulo|escapejs }}', {% if livro.disponivel %}true{% else %}false{% endif %})">
+            {% if livro.disponivel %}Emprestar{% else %}Entrar na Fila{% endif %}
+          </button>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -329,7 +441,142 @@
 
 </div>
 
-<!-- ── Modal Cadastro / Edição ────────────────────────────────────── -->
+<!-- ══════════════════════════════════════════════════════════════════
+     SEÇÃO: MEMBROS
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="tab-membros" style="display:none">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Membros</h1>
+      <p class="page-sub">
+        {% if membros %}
+          {{ membros|length }} {% if membros|length == 1 %}membro cadastrado{% else %}membros cadastrados{% endif %}
+        {% else %}
+          Nenhum membro cadastrado ainda
+        {% endif %}
+      </p>
+    </div>
+    <button class="btn-gold" data-bs-toggle="modal" data-bs-target="#modalMembro">
+      + Cadastrar Membro
+    </button>
+  </div>
+
+  {% if membros %}
+  <div class="book-list">
+    {% for membro in membros %}
+    <div class="book-card">
+      <div class="card-toggle" onclick="toggleCard(this)">
+        <div class="card-left">
+          <div class="member-icon">{{ membro.nome|first|upper }}</div>
+          <div style="min-width:0">
+            <div class="book-title">{{ membro.nome }}</div>
+            <div class="book-meta">
+              {% if membro.matricula %}Mat. {{ membro.matricula }}{% endif %}
+              {% if membro.matricula and membro.email %} &middot; {% endif %}
+              {{ membro.email }}
+            </div>
+          </div>
+        </div>
+        <div class="card-right">
+          {% if membro.telefone %}<span class="badge-dim d-none d-md-inline">{{ membro.telefone }}</span>{% endif %}
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="detail-grid">
+          {% if membro.matricula %}<div><div class="detail-label">Matrícula</div><div class="detail-value">{{ membro.matricula }}</div></div>{% endif %}
+          {% if membro.email %}<div><div class="detail-label">E-mail</div><div class="detail-value">{{ membro.email }}</div></div>{% endif %}
+          {% if membro.telefone %}<div><div class="detail-label">Telefone</div><div class="detail-value">{{ membro.telefone }}</div></div>{% endif %}
+        </div>
+        <div class="card-actions">
+          <button class="btn-ghost"
+            onclick="abrirHistorico({{ membro.id }}, '{{ membro.nome|escapejs }}')">
+            Ver Histórico
+          </button>
+          <form method="POST" action="/membros/remover/{{ membro.id }}/" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger-ghost">Remover</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">◎</div>
+    <h2 class="empty-title">Nenhum membro</h2>
+    <p class="empty-text">Cadastre o primeiro membro da biblioteca para registrar empréstimos.</p>
+    <button class="btn-gold" data-bs-toggle="modal" data-bs-target="#modalMembro">
+      Cadastrar primeiro membro
+    </button>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SEÇÃO: EMPRÉSTIMOS ATIVOS
+═══════════════════════════════════════════════════════════════════ -->
+<div class="page" id="tab-emprestimos" style="display:none">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Empréstimos Ativos</h1>
+      <p class="page-sub">
+        {% if emprestimos_ativos %}
+          {{ emprestimos_ativos|length }} {% if emprestimos_ativos|length == 1 %}empréstimo em aberto{% else %}empréstimos em aberto{% endif %}
+        {% else %}
+          Nenhum empréstimo ativo no momento
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  {% if emprestimos_ativos %}
+  <div class="book-list">
+    {% for emp in emprestimos_ativos %}
+    <div class="book-card">
+      <div class="loan-row">
+        <div class="loan-left">
+          <div class="loan-icon">↔</div>
+          <div style="min-width:0">
+            <div class="book-title">{{ emp.livro_titulo }}</div>
+            <div class="book-meta">
+              {{ emp.membro_nome }} &middot; Emprestado em {{ emp.data_emprestimo }}
+            </div>
+          </div>
+        </div>
+        <div class="loan-right">
+          <span class="badge-dim d-none d-md-inline">Devolver até {{ emp.data_prevista_devolucao }}</span>
+          <form method="POST" action="/emprestimos/devolver/{{ emp.id }}/" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="btn-sm-gold">Registrar Devolução</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-icon">↔</div>
+    <h2 class="empty-title">Nenhum empréstimo ativo</h2>
+    <p class="empty-text">Empreste um livro a um membro pelo Acervo.</p>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MODAIS
+═══════════════════════════════════════════════════════════════════ -->
+
+<!-- Modal: Cadastro / Edição de Livro (existente) ─────────────────── -->
 <div class="modal fade" id="modalLivro" tabindex="-1" aria-labelledby="modalTitulo" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
@@ -344,7 +591,6 @@
 
         <div class="modal-body">
 
-          <!-- Informações Principais -->
           <div class="form-section">
             <div class="section-header">Informações Principais</div>
             <div class="section-body">
@@ -404,7 +650,6 @@
             </div>
           </div>
 
-          <!-- Detalhes Físicos -->
           <div class="form-section">
             <div class="section-header">Detalhes Físicos</div>
             <div class="section-body">
@@ -452,7 +697,6 @@
             </div>
           </div>
 
-          <!-- Descrição e Busca -->
           <div class="form-section mb-0">
             <div class="section-header">Descrição e Busca</div>
             <div class="section-body">
@@ -475,14 +719,174 @@
           <button type="button" class="btn-ghost px-4" data-bs-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn-gold px-4" id="btnSubmit">Cadastrar Livro</button>
         </div>
-
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cadastro de Membro ─────────────────────────────────────── -->
+<div class="modal fade" id="modalMembro" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Cadastrar Membro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form method="POST" action="/membros/cadastrar/">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nome completo <span class="required-star">*</span></label>
+            <input type="text" class="form-control" name="nome"
+                   placeholder="Ex.: Ana Paula Silva" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Matrícula</label>
+            <input type="text" class="form-control" name="matricula"
+                   placeholder="Ex.: 2024001" />
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">E-mail</label>
+              <input type="email" class="form-control" name="email"
+                     placeholder="email@exemplo.com" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Telefone</label>
+              <input type="text" class="form-control" name="telefone"
+                     placeholder="(11) 99999-9999" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end">
+          <button type="button" class="btn-ghost px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn-gold px-4">Cadastrar Membro</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Empréstimo / Fila de Espera ───────────────────────────── -->
+<div class="modal fade" id="modalEmprestimo" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="empModalTitulo">Registrar Empréstimo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form method="POST" action="/emprestimos/registrar/">
+        {% csrf_token %}
+        <input type="hidden" name="livro_id" id="empLivroId" />
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Livro</label>
+            <input type="text" class="form-control" id="empLivroNome" readonly />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Membro <span class="required-star">*</span></label>
+            {% if membros %}
+            <select class="form-select" name="membro_id" required>
+              <option value="">Selecione o membro...</option>
+              {% for membro in membros %}
+              <option value="{{ membro.id }}">
+                {{ membro.nome }}{% if membro.matricula %} ({{ membro.matricula }}){% endif %}
+              </option>
+              {% endfor %}
+            </select>
+            {% else %}
+            <div style="font-size:13px; color:#c87070; padding: 10px 0;">
+              Nenhum membro cadastrado. Acesse a aba Membros para cadastrar.
+            </div>
+            {% endif %}
+          </div>
+
+          <div id="empPrazoWrap" class="mb-3">
+            <label class="form-label">Prazo de devolução</label>
+            <select class="form-select" name="prazo_dias">
+              <option value="7">7 dias</option>
+              <option value="14" selected>14 dias</option>
+              <option value="21">21 dias</option>
+              <option value="30">30 dias</option>
+            </select>
+          </div>
+
+          <div id="empFilaAviso" class="aviso-fila" style="display:none">
+            Este livro está emprestado. Você será adicionado à fila de espera e receberá o livro automaticamente quando ele for devolvido.
+          </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-end">
+          <button type="button" class="btn-ghost px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn-gold px-4" id="empBtnSubmit">Confirmar Empréstimo</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Histórico do Membro ───────────────────────────────────── -->
+<div class="modal fade" id="modalHistorico" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Histórico — <span id="historicoNome" style="color:var(--gold)"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div id="historicoLoading" style="text-align:center; padding:40px; color:#555;">
+          Carregando…
+        </div>
+        <div id="historicoConteudo" style="display:none">
+          <table class="hist-table">
+            <thead>
+              <tr>
+                <th>Livro</th>
+                <th>Emprestado</th>
+                <th>Prazo</th>
+                <th>Devolvido</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="historicoBody"></tbody>
+          </table>
+          <div id="historicoVazio" style="display:none; text-align:center; padding:40px; font-size:14px; color:#555;">
+            Nenhum empréstimo registrado para este membro.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer d-flex justify-content-end">
+        <button type="button" class="btn-ghost px-4" data-bs-dismiss="modal">Fechar</button>
+      </div>
+
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  /* ── Tabs ──────────────────────────────────────────────────────── */
+  function showTab(name) {
+    ['acervo', 'membros', 'emprestimos'].forEach(t => {
+      document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none'
+    })
+    document.querySelectorAll('[data-tab]').forEach(b => {
+      b.classList.toggle('active', b.dataset.tab === name)
+    })
+  }
+
+  /* ── Toggle card ───────────────────────────────────────────────── */
   function toggleCard(header) {
     const body    = header.nextElementSibling
     const chevron = header.querySelector('.chevron')
@@ -492,6 +896,7 @@
     if (!isOpen) { body.classList.add('open'); chevron.classList.add('open') }
   }
 
+  /* ── Modal Livro ───────────────────────────────────────────────── */
   document.getElementById('modalLivro').addEventListener('hidden.bs.modal', () => {
     document.getElementById('formLivro').reset()
     document.getElementById('formLivro').action = '/cadastrar/'
@@ -525,18 +930,80 @@
     }
   }
 
+  /* ── Modal Empréstimo / Fila ───────────────────────────────────── */
+  function abrirEmprestimo(livroId, livroNome, disponivel) {
+    document.getElementById('empLivroId').value    = livroId
+    document.getElementById('empLivroNome').value  = livroNome
+
+    if (disponivel) {
+      document.getElementById('empModalTitulo').textContent  = 'Registrar Empréstimo'
+      document.getElementById('empBtnSubmit').textContent    = 'Confirmar Empréstimo'
+      document.getElementById('empPrazoWrap').style.display  = 'block'
+      document.getElementById('empFilaAviso').style.display  = 'none'
+    } else {
+      document.getElementById('empModalTitulo').textContent  = 'Entrar na Fila de Espera'
+      document.getElementById('empBtnSubmit').textContent    = 'Entrar na Fila'
+      document.getElementById('empPrazoWrap').style.display  = 'none'
+      document.getElementById('empFilaAviso').style.display  = 'block'
+    }
+
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('modalEmprestimo')).show()
+  }
+
+  /* ── Modal Histórico ───────────────────────────────────────────── */
+  function abrirHistorico(membroId, membroNome) {
+    document.getElementById('historicoNome').textContent      = membroNome
+    document.getElementById('historicoLoading').style.display = 'block'
+    document.getElementById('historicoConteudo').style.display = 'none'
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('modalHistorico')).show()
+
+    fetch('/membros/' + membroId + '/historico/')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('historicoLoading').style.display  = 'none'
+        document.getElementById('historicoConteudo').style.display = 'block'
+
+        const tbody = document.getElementById('historicoBody')
+        tbody.innerHTML = ''
+
+        if (!data.historico.length) {
+          document.getElementById('historicoVazio').style.display = 'block'
+          return
+        }
+        document.getElementById('historicoVazio').style.display = 'none'
+
+        data.historico.forEach(e => {
+          const tr = document.createElement('tr')
+          const statusColor = e.status === 'ativo' ? '#f5c518' : '#4ade80'
+          const statusText  = e.status === 'ativo' ? 'Ativo'   : 'Devolvido'
+          tr.innerHTML = `
+            <td>${e.livro_titulo}</td>
+            <td style="color:#888">${e.data_emprestimo}</td>
+            <td style="color:#888">${e.data_prevista_devolucao}</td>
+            <td style="color:#888">${e.data_devolucao || '—'}</td>
+            <td><span style="color:${statusColor};font-weight:500;font-size:12px">${statusText}</span></td>
+          `
+          tbody.appendChild(tr)
+        })
+      })
+      .catch(() => {
+        document.getElementById('historicoLoading').textContent = 'Erro ao carregar histórico.'
+      })
+  }
+
+  /* ── Busca (acervo) ────────────────────────────────────────────── */
   const searchInput = document.getElementById('searchInput')
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       const q = searchInput.value.toLowerCase().trim()
       let visible = 0
-      document.querySelectorAll('.book-card').forEach(card => {
+      document.querySelectorAll('#bookList .book-card').forEach(card => {
         const match = !q
-          || card.dataset.titulo.includes(q)
-          || card.dataset.autor.includes(q)
-          || card.dataset.categoria.includes(q)
-          || card.dataset.isbn.includes(q)
-          || card.dataset.palavras.includes(q)
+          || (card.dataset.titulo   || '').includes(q)
+          || (card.dataset.autor    || '').includes(q)
+          || (card.dataset.categoria|| '').includes(q)
+          || (card.dataset.isbn     || '').includes(q)
+          || (card.dataset.palavras || '').includes(q)
         card.style.display = match ? '' : 'none'
         if (match) visible++
       })
