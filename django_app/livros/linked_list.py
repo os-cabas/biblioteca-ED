@@ -79,5 +79,17 @@ class LinkedList:
                 current = current.next
         return None
 
+    def find_all_by(self, key: str, value) -> list[dict]:
+        result = []
+        current = self.head
+        while current is not None:
+            if current.data.get(key) == value:
+                result.append(current.data)
+            current = current.next
+        return result
+
 
 livros_db = LinkedList()
+membros_db = LinkedList()
+emprestimos_db = LinkedList()
+filas_espera: dict = {}  # livro_id -> list[int] de membro_ids
