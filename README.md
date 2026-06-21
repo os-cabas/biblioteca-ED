@@ -8,31 +8,57 @@
 ---
 
 ## 🛠️ Tecnologias Utilizadas
-- **Backend:** Python, Django
-- **Frontend:** HTML, CSS, JS, Boostrap5
+- **Backend:** Python 3, Django
+- **Estrutura de dados:** Lista Ligada (LinkedList) implementada do zero
+- **Frontend:** HTML5, CSS3, JavaScript, Bootstrap 5
 
 ---
 
 ## 📖 Descrição
-Este projeto tem como objetivo desenvolver um sistema para controle de acervo e empréstimos de uma biblioteca.  
-O sistema permitirá:
-- Cadastro e gerenciamento de livros e outros materiais do acervo.  
-- Controle de empréstimos e devoluções.  
-- Registro de usuários da biblioteca.  
-- Relatórios e consultas sobre disponibilidade de itens.  
+Sistema web para controle de acervo e empréstimos de uma biblioteca, desenvolvido com Django e estruturas de dados nativas do Python (sem banco de dados relacional — os dados são mantidos em memória via Lista Ligada).
 
 ---
 
-## 🚀 Como Executar o Projeto
+## ✅ Funcionalidades
 
-### Backend (Python)
-1. Certifique-se de ter o **Python 3.8+** instalado.  
-2. Instale as dependências:  
-   ```bash
-   git clone https://github.com/os-cabas/biblioteca-ED.git
-   python -m venv venv
-   cd django_app
-   pip install -r requirements.txt
-   python manage.py runserve
+### Acervo (Livros)
+- Cadastro de livros com título, autor, editora, ISBN, categoria, idioma, formato, localização, resumo e palavras-chave
+- Edição e remoção de livros
+- **Busca por título ou autor** (filtro server-side com list comprehension)
+- **Ordenação por título A → Z ou Z → A** (server-side com `sorted()`)
 
-   Acesse http://127.0.0.1:8000/
+### Membros
+- Cadastro de membros com nome, matrícula, e-mail e telefone
+- Remoção de membros
+- Histórico completo de empréstimos por membro
+
+### Empréstimos
+- Registro de empréstimo com prazo configurável (7, 14, 21 ou 30 dias)
+- Registro de devolução
+- **Fila de espera automática** — quando um livro está emprestado, o membro entra na fila e recebe o livro automaticamente na próxima devolução
+
+---
+
+## 🗂️ Estrutura de Dados
+O projeto implementa uma **Lista Ligada (LinkedList)** em `django_app/livros/linked_list.py`, utilizada como banco de dados em memória para livros, membros e empréstimos. A estrutura suporta inserção, remoção, busca por ID, busca por campo e atualização, com controle de concorrência via `threading.Lock`.
+
+---
+
+## 🚀 Como Executar
+
+```bash
+git clone https://github.com/os-cabas/biblioteca-ED.git
+cd biblioteca-ED
+
+python -m venv venv
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # Linux/Mac
+
+cd django_app
+pip install -r requirements.txt
+python manage.py runserver
+```
+
+Acesse: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
+> **Atenção:** os dados são armazenados em memória e são perdidos ao reiniciar o servidor.

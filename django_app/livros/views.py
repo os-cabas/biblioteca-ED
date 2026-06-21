@@ -18,6 +18,8 @@ CAMPOS_MEMBRO = ["nome", "matricula", "email", "telefone"]
 def index(request):
     livros = livros_db.to_list()
     membros = membros_db.to_list()
+    ordenar = request.GET.get("ordenar", "")
+    busca = request.GET.get("busca", "").strip().lower()
 
     membro_map = {m["id"]: m for m in membros}
     livro_map = {l["id"]: l for l in livros}
@@ -26,6 +28,17 @@ def index(request):
         livro.setdefault("disponivel", True)
         fila_ids = filas_espera.get(livro["id"], [])
         livro["fila_espera"] = [membro_map.get(mid, {}).get("nome", "?") for mid in fila_ids]
+
+    if busca:
+        livros = [
+            l for l in livros
+            if busca in l.get("titulo", "").lower() or busca in l.get("autor", "").lower()
+        ]
+
+    if ordenar == "za":
+        livros = sorted(livros, key=lambda l: l["titulo"].lower(), reverse=True)
+    elif ordenar == "az":
+        livros = sorted(livros, key=lambda l: l["titulo"].lower())
 
     emprestimos_ativos = []
     for emp in emprestimos_db.to_list():
@@ -39,6 +52,8 @@ def index(request):
         "livros": livros,
         "membros": membros,
         "emprestimos_ativos": emprestimos_ativos,
+        "ordenar": ordenar,
+        "busca": busca,
     })
 
 
